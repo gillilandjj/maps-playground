@@ -14,13 +14,15 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script>
       var map;
+      var geocoder;
       function initialize() {
-        var myLatlng = new google.maps.LatLng(52.6188239,30.2383206);
+        var myLatlng = new google.maps.LatLng(32.9570199,-96.6874151);
         var mapOptions = {
-          zoom: 5,
+          zoom: 11,
           center: myLatlng
         }
         map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        geocoder = new google.maps.Geocoder();
 
         google.maps.event.addListener(map, 'click', function(event) {
           placeMarker(event.latLng);
@@ -37,11 +39,27 @@
         var infowindow = new google.maps.InfoWindow({
             content: 'Hi H8rz'
         });
+
+        geocoder.geocode({'latLng': location}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+              infowindow.setContent('Hi H8rz<br>' + results[0].formatted_address + '</br>');
+            } else {
+              alert('No results found');
+            }
+          } else {
+            alert('Geocoder failed due to: ' + status);
+          }
+        });
+
         infowindow.open(map,marker);
 
         google.maps.event.addListener(infowindow,'closeclick',function(){
            marker.setMap(null); //removes the marker
         });
+      }
+
+      function codeLatLng() {
       }
 
       //map.setCenter(location);
