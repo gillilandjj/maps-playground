@@ -30,10 +30,12 @@
       }
 
       function placeMarker(location) {
+        var myIcon = new google.maps.MarkerImage("img/site_icon.png", null, null, null, new google.maps.Size(59,68));
         var marker = new google.maps.Marker({
             position: location,
             map: map,
-            title: 'Hi H8rz'
+            title: 'Hi H8rz',
+            icon: myIcon 
         });
 
         var infowindow = new google.maps.InfoWindow({
@@ -41,6 +43,7 @@
         });
 
         geocoder.geocode({'latLng': location}, function(results, status) {
+          console.debug(results);
           if (status == google.maps.GeocoderStatus.OK) {
             if (results[1]) {
               infowindow.setContent('Hi H8rz<br>' + results[0].formatted_address + '</br>');
