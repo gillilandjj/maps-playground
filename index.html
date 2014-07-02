@@ -4,73 +4,20 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>AT&T EBM</title>
-    <style>
-      html, body, #map-canvas {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
-      }
-    </style>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/marker.js"></script>
     <script>
-      var map;
-      var geocoder;
-      function initialize() {
-        var myLatlng = new google.maps.LatLng(32.9570199,-96.6874151);
-        var mapOptions = {
-          zoom: 11,
-          center: myLatlng
-        }
-        map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-        geocoder = new google.maps.Geocoder();
-
-        google.maps.event.addListener(map, 'click', function(event) {
-          placeMarker(event.latLng);
-        });
-      }
-
-      function placeMarker(location) {
-        var myIcon = new google.maps.MarkerImage("img/site_icon.png", null, null, null, new google.maps.Size(59,68));
-        var marker = new google.maps.Marker({
-            position: location,
-            map: map,
-            title: 'Hi H8rz',
-            icon: myIcon 
-        });
-
-        var infowindow = new google.maps.InfoWindow({
-            content: 'Hi H8rz'
-        });
-
-        geocoder.geocode({'latLng': location}, function(results, status) {
-          console.debug(results);
-          if (status == google.maps.GeocoderStatus.OK) {
-            if (results[1]) {
-              infowindow.setContent('Hi H8rz<br>' + results[0].formatted_address + '</br>');
-            } else {
-              alert('No results found');
-            }
-          } else {
-            alert('Geocoder failed due to: ' + status);
-          }
-        });
-
-        infowindow.open(map,marker);
-
-        google.maps.event.addListener(infowindow,'closeclick',function(){
-           marker.setMap(null); //removes the marker
-        });
-      }
-
-      function codeLatLng() {
-      }
-
-      //map.setCenter(location);
-
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   </head>
   <body>
+    <input id="pac-input" class="controls" type="text" placeholder="Search">
     <div id="map-canvas"></div>
+    <div id="sidebar"></div>
+    <label id="err-lbl" class="controls" type="text">
   </body>
 </html>
