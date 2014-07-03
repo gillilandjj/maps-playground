@@ -18,7 +18,6 @@ function addMarker(map, location, animation) {
   //var bounds = new google.maps.LatLngBounds();
   //map.fitBounds(bounds);
 
-  $('#sidebar').append(createSidebarItem(marker));
 }
 
 function createInfoWindow(map, marker, location) {
@@ -31,6 +30,7 @@ function createInfoWindow(map, marker, location) {
     if (status == google.maps.GeocoderStatus.OK) {
       if (results[1]) {
         infowindow.setContent('Hi H8rz<br>' + results[0].formatted_address + '</br>');
+        $('#sidebar').append(createSidebarItem(results[0], marker));
       } else {
         alert('No results found');
       }
@@ -46,6 +46,23 @@ function createInfoWindow(map, marker, location) {
   });
 
   return infowindow;
+}
+
+function geocode(location) {
+
+  geocoder.geocode({'latLng': location}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[1]) {
+        return results[0].formatted_address;
+      } else {
+        console.debug('No results found');
+        return null;
+      }
+    } else {
+      console.debug('Geocoder failed due to: ' + status);
+      return null;
+    }
+  });
 }
 
 function removeMarker(marker) {
@@ -75,11 +92,35 @@ function createMarker(map, location, animation) {
   });
 }
 
-function createSidebarItem(marker) {
+function createSidebarItem(geo, marker) {
+  var street_number, route, city, county, state, country, zip;
+
+  $.each(geo.address_components, function(k, v) {
+    var type = v.types[0];
+    var value = v.long_name; // short_name
+
+    if ('street_number' == type) {
+      street_number = value;
+    } else if ('route' == type) {
+      route = value;
+    } else if ('locality' == type) {
+      city = value;
+    } else if ('administrative_area_level_2' == type) {
+      county = value;
+    } else if ('administrative_area_level_1' == type) {
+      state = value;
+    } else if ('country' == type) {
+      country = value;
+    } else if ('postal_code' == type) {
+      zip = value;
+    }
+  });
+
+
   var item = $('<div>', {class: 'sidebar-item'});
   item.prop('marker', marker);
 
-  item.html('TEST');
+  item.append($('<div>', {class: 'address-line', html: street_number + ' ' + route + '<br>' + city + ' ' + state + ' ' + zip}));
 
   return item;
 }

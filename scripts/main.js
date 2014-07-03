@@ -12,7 +12,7 @@ function initialize() {
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
   var errdiv = document.getElementById('err-lbl');
-  map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(errdiv);
+  map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(errdiv);
 
   var searchBox = new google.maps.places.SearchBox(
     /** @type {HTMLInputElement} */(input));
@@ -35,7 +35,22 @@ function initialize() {
   google.maps.event.addListener(map, 'click', function(event) {
     if (map.getZoom() < 15) {
       //document.getElementById('pac-input').val('error');
-      showError('TEST');
+      showError(
+        randomFrom(
+          [
+           'That… is why you fail. Zoom in.',
+           'Try not. Do… or do not. There is no try. Zoom in.',
+           'Everything is proceeding as I have foreseen. Zoom in.',
+           'It’s against my programming to impersonate a deity. Zoom in.',
+           'Great, kid. Don’t get cocky. Zoom in.',
+           'I saw… a city in the clouds. Zoom in.',
+           'You don’t have to do this to impress me. Zoom in.',
+           'You are a member of the rebel alliance, and a traitor. Zoom in.',
+           'STAY ON TARGET. Zoom in.',
+           '…Scoundrel. I like that. Zoom in.',
+           'That’s no moon. Zoom in.'
+          ])
+        );
       console.debug('error');
       return;
     }
@@ -47,13 +62,27 @@ function initialize() {
   google.maps.event.addListener(map, 'bounds_changed', function() {
     searchBox.setBounds(map.getBounds());
   });
+
+  google.maps.event.addListenerOnce(map, 'idle', function(){
+    // do something only the first time the map is loaded
+    $('#err-lbl').hide();
+  });
+}
+
+function hideError() {
+  setTimeout(function() {
+    var div = $('#err-lbl');
+    div.slideToggle(500);
+    //div.html('');
+  }, 3000);
 }
 
 function showError(text) {
-  //var errdiv = document.getElementById('err-lbl');
-  //errdiv.innerHTML = text;
-  ////errdiv.slideUp("slow", function() { } );
-  var div = $('err-lbl');
-  div.innerHTML(text);
-  div.slideUp();
+  var div = $('#err-lbl');
+  div.html(text);
+  div.slideToggle(150, 'swing', hideError);
+}
+
+function randomFrom(array) {
+  return array[Math.floor(Math.random() * array.length)];
 }

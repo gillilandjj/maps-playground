@@ -16,18 +16,26 @@ html, body {
 #sidebar {
   height: 100%;
   width: 25%;
-  background-color: green;
+  background-color: #F2F2F2;
   margin: 0;
   padding: 0;
   float: right;
 }
 
 .sidebar-item {
-  height: 40px;
+  height: 120px;
   width: 100%;
-  background-color: red;
+  background-color: #B9C3CD;
+  border-bottom: 1px solid #9BA5AF;
+  border-left: 1px solid #9BA5AF;
   margin: 0;
   padding: 0;
+}
+
+.address-line {
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 200;
 }
 
 .controls {
@@ -54,7 +62,7 @@ html, body {
 #err-lbl {
   background-color: #fff;
   padding: 4px 0 0 0;
-  width: 400px;
+  width: 500px;
   font-family: Roboto;
   font-size: 15px;
   font-weight: 300;
