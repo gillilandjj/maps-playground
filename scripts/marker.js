@@ -26,7 +26,6 @@ function createInfoWindow(map, marker, location) {
   });
 
   geocoder.geocode({'latLng': location}, function(results, status) {
-    console.debug(results);
     if (status == google.maps.GeocoderStatus.OK) {
       if (results[1]) {
         infowindow.setContent('Hi H8rz<br>' + results[0].formatted_address + '</br>');
@@ -119,6 +118,12 @@ function createSidebarItem(geo, marker) {
 
   var item = $('<div>', {class: 'sidebar-item'});
   item.prop('marker', marker);
+
+  var remove = $('<div>', {class: 'remove-button'});
+  remove.click(function() {
+    removeMarker(marker);
+  });
+  item.append(remove);
 
   item.append($('<div>', {class: 'address-line', html: street_number + ' ' + route + '<br>' + city + ' ' + state + ' ' + zip}));
 
