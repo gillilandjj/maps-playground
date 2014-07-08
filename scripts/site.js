@@ -20,7 +20,10 @@ function Site(map, location, drop_animation) {
     
     geocoder.geocode({'latLng': instance.location}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-        if (results[1]) {
+        if (results[0]) {
+          if(!MURICA(results[0])) {
+            return null;
+          }
           instance.geo_results = results[0];
           createMarker();
           createInfoWindow();
@@ -36,6 +39,27 @@ function Site(map, location, drop_animation) {
     });
   }
 
+  function MURICA(georesults) {
+    var address = getAddressItems(georesults.address_components);
+    if ('US' == address['country']) {
+      return true;
+    }
+    showError(
+      randomFrom(
+        [
+          'What?!? Foreigners... Get back to \'Murica.',
+          'This isn\'t the Land of the Free OR the Home of the Brave...',
+          'Hey Christopher Columbus, you missed.',
+          'I don\'t see red, white, or blue anywhere around here.',
+          '¡Volver a Los Estados Unidos, por favor!',
+          '<a href="http://cdn.memegenerator.net/instances/500x/49611893.jpg" target="_blank">\'MURICA! \'MURICA! \'MURICA!</a>',
+          'Sorry, we seem to be having a little <a href="http://i2.kym-cdn.com/photos/images/facebook/000/451/444/428.jpg" target="_blank"> trouble...</a>'
+        ]
+      )
+    );
+    return false;
+  }
+
   function createMarker() {
     // create and add to map
     instance.marker = new google.maps.Marker({
@@ -49,7 +73,7 @@ function Site(map, location, drop_animation) {
 
   function createInfoWindow() {
     instance.info_window = new google.maps.InfoWindow({
-      content: 'Hi H8rz<br><p>' + instance.geo_results.formatted_address + '</p>'
+      content: 'Hi H8rz<p>' + displayAddress(getAddressItems(instance.geo_results.address_components)) + '</p>'
     });
     instance.info_window.open(instance.map, instance.marker);
 
@@ -58,29 +82,39 @@ function Site(map, location, drop_animation) {
     });
   }
 
-  function createSidebarItem() {
-    var street_number, route, city, county, state, country, zip;
+  function getAddressItems(components) {
+    /*
+      street_number
+      route
+      locality (city)
+      administrative_area_level_2 (county)
+      administrative_area_level_1 (state)
+      country
+      zip
+    */
+    var address = [];
 
-    $.each(instance.geo_results.address_components, function(k, v) {
+    $.each(components, function(k, v) {
       var type = v.types[0];
-      var value = v.long_name; // short_name
+      var value = v.short_name; // long_name
 
-      if ('street_number' == type) {
-        street_number = value;
-      } else if ('route' == type) {
-        route = value;
-      } else if ('locality' == type) {
-        city = value;
-      } else if ('administrative_area_level_2' == type) {
-        county = value;
-      } else if ('administrative_area_level_1' == type) {
-        state = value;
-      } else if ('country' == type) {
-        country = value;
-      } else if ('postal_code' == type) {
-        zip = value;
-      }
+      address[type] = value;
     });
+
+    return address;
+  }
+
+  function displayAddress(addr) {
+    var html = [];
+    html.push(
+      addr['street_number'], ' ', addr['route'],
+      '<br>',
+      addr['locality'], ' ', addr['administrative_area_level_1'], ' ', addr['postal_code']
+    );
+    return html.join('');
+  }
+
+  function createSidebarItem() {
 
     instance.sidebar_item = $('<div>', {class: 'sidebar-item'});
 
@@ -90,7 +124,14 @@ function Site(map, location, drop_animation) {
     });
     instance.sidebar_item.append(remove);
 
-    instance.sidebar_item.append($('<div>', {class: 'address-line', html: street_number + ' ' + route + '<br>' + city + ' ' + state + ' ' + zip}));
+    instance.sidebar_item.append(
+      $('<div>',
+        { class: 'address-line',
+          html: displayAddress(getAddressItems(instance.geo_results.address_components))
+        })
+    );
+
+    instance.side
 
     $('#sidebar').append(instance.sidebar_item);
   }
