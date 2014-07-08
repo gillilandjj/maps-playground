@@ -1,4 +1,5 @@
 var mySites = [];
+var zoom = { region: 6, city: 12, optimal: 17 };
 
 function initialize() {
   var myLatlng = new google.maps.LatLng(32.9570199,-96.6874151);
@@ -35,6 +36,25 @@ function initialize() {
   });
 
   google.maps.event.addListener(map, 'click', function(event) {
+    // Zoom to region
+    if (map.getZoom() < zoom.region) {
+      map.setCenter(event.latLng);
+      map.setZoom(zoom.region);
+      return;
+    }
+    // Zoom to city
+    if (map.getZoom() < zoom.city) {
+      map.setCenter(event.latLng);
+      map.setZoom(zoom.city);
+      return;
+    }
+    //Zoom to optimal
+    if (map.getZoom() < zoom.optimal) {
+      map.setCenter(event.latLng);
+      map.setZoom(zoom.optimal);
+      return;
+    }
+    /*
     if (map.getZoom() < 15) {
       //document.getElementById('pac-input').val('error');
       showError(
@@ -55,7 +75,7 @@ function initialize() {
         )
       );
       return;
-    }
+    }*/
     addSite(map, event.latLng, null);
   });
   
