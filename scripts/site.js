@@ -114,7 +114,16 @@ function Site(map, location, drop_animation) {
     return html.join('');
   }
 
+  function createProduct(product) {
+    return $('<div>',
+             { class: 'sidebar-product',
+               html: product.name + ' ' + product.transport + '<br>' + product.price
+             });
+  }
+
   function createSidebarItem() {
+
+    var addressItems = getAddressItems(instance.geo_results.address_components);
 
     instance.sidebar_item = $('<div>', {class: 'sidebar-item'});
 
@@ -127,11 +136,37 @@ function Site(map, location, drop_animation) {
     instance.sidebar_item.append(
       $('<div>',
         { class: 'address-line',
-          html: displayAddress(getAddressItems(instance.geo_results.address_components))
+          html: displayAddress(addressItems)
         })
     );
 
-    instance.side
+    var products = getProducts(addressItems['street_number'] + ' ' + addressItems['route'], // Street
+                               addressItems['locality'],                                    // City
+                               addressItems['administrative_area_level_2'],                 // County
+                               addressItems['administrative_area_level_1'],                 // State
+                               addressItems['postal_code'],                                 // Zip
+                               addressItems['country']);                                    // Country
+
+    if (0 < products.length) {
+      var container = $('<div>', { class: 'sidebar-product-container' });
+      instance.sidebar_item.append(container);
+      $.each(products, function(i, v) {
+        var prod = createProduct(v);
+        container.append(prod);
+
+        prod.click(function(event) {
+          var c = 'sidebar-product-selected';
+          if ($(this).hasClass(c)) {
+            $(this).removeClass(c);
+            event.preventDefault();
+            return;
+          }
+          container.children().removeClass(c);
+          $(this).addClass(c);
+          event.preventDefault();
+        });
+      });
+    }
 
     $('#sidebar').append(instance.sidebar_item);
   }

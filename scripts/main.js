@@ -51,9 +51,9 @@ function initialize() {
            'STAY ON TARGET. Zoom in.',
            '…Scoundrel. I like that. Zoom in.',
            'That’s no moon. Zoom in.'
-          ])
-        );
-      console.debug('error');
+          ]
+        )
+      );
       return;
     }
     addSite(map, event.latLng, null);
