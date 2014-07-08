@@ -1,3 +1,5 @@
+var mySites = [];
+
 function initialize() {
   var myLatlng = new google.maps.LatLng(32.9570199,-96.6874151);
   var mapOptions = {
@@ -27,7 +29,7 @@ function initialize() {
 
     for (var i = 0, place; place = places[i]; i++) {
       if (place.types[0] == 'street_address') {
-        addMarker(map, place.geometry.location, google.maps.Animation.DROP);
+        addSite(map, place.geometry.location, google.maps.Animation.DROP);
       }
     }
   });
@@ -54,7 +56,7 @@ function initialize() {
       console.debug('error');
       return;
     }
-    addMarker(map, event.latLng, null);
+    addSite(map, event.latLng, null);
   });
   
   // Bias the SearchBox results towards places that are within the bounds of the
@@ -69,11 +71,23 @@ function initialize() {
   });
 }
 
+function addSite(map, location, animation) {
+  mySites.push(new Site(map, location, animation));
+  map.getBounds().extend(location);
+}
+
+function removeSite(site) {
+  // remove from array of sites
+  var index = mySites.indexOf(site);
+  if (index > -1) {
+    mySites.splice(index, 1);
+  }
+}
+
 function hideError() {
   setTimeout(function() {
     var div = $('#err-lbl');
     div.slideToggle(500);
-    //div.html('');
   }, 3000);
 }
 
