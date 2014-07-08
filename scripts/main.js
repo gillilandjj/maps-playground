@@ -1,10 +1,10 @@
 var mySites = [];
-var zoom = { region: 6, city: 12, optimal: 17 };
+var zoom = { region: 6, city: 12, street: 14, optimal: 16 };
 
 function initialize() {
   var myLatlng = new google.maps.LatLng(32.9570199,-96.6874151);
   var mapOptions = {
-    zoom: 11,
+    zoom: zoom.city,
     center: myLatlng
   }
   var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -38,19 +38,25 @@ function initialize() {
   google.maps.event.addListener(map, 'click', function(event) {
     // Zoom to region
     if (map.getZoom() < zoom.region) {
-      map.setCenter(event.latLng);
+      map.panTo(event.latLng);
       map.setZoom(zoom.region);
       return;
     }
     // Zoom to city
     if (map.getZoom() < zoom.city) {
-      map.setCenter(event.latLng);
+      map.panTo(event.latLng);
       map.setZoom(zoom.city);
+      return;
+    }
+    // Zoom to street
+    if (map.getZoom() < zoom.street) {
+      map.panTo(event.latLng);
+      map.setZoom(zoom.street);
       return;
     }
     //Zoom to optimal
     if (map.getZoom() < zoom.optimal) {
-      map.setCenter(event.latLng);
+      map.panTo(event.latLng);
       map.setZoom(zoom.optimal);
       return;
     }
