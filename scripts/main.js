@@ -134,11 +134,21 @@ function initialize() {
     map.setCenter(initialLocation);
   }
 
+  showSidebarTip();
+}
+
+function showSidebarTip() {
+  $('#sidebar-tip').show();
+}
+
+function hideSidebarTip() {
+  $('#sidebar-tip').hide();
 }
 
 function addSite(map, location, animation, placeId) {
   mySites.push(new Site(map, location, animation, placeId));
   map.getBounds().extend(location);
+  hideSidebarTip();
 }
 
 function addPlace(map, place_id, animation) {
@@ -157,6 +167,9 @@ function removeSite(site) {
   var index = mySites.indexOf(site);
   if (index > -1) {
     mySites.splice(index, 1);
+  }
+  if (mySites.length == 0) {
+    showSidebarTip();
   }
 }
 

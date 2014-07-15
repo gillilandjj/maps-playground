@@ -5,17 +5,25 @@ html, body {
   padding: 0;
 }
 
+#container {
+  height: 100%;
+  width: 100%;
+}
+
 #map-canvas {
   height: 100%;
-  width: 85%;
+  width: auto;
   margin: 0;
   padding: 0;
-  float: left;
+  float: none;
+  overflow: hidden;
+  top: 0;
+  left: 0;
 }
 
 #sidebar {
   height: 100%;
-  width: 15%;
+  width: 240px;
   background-color: #0079b6;
   color: white;
   margin: 0;
@@ -25,9 +33,27 @@ html, body {
   overflow-x: hidden;
 }
 
+#sidebar-tip {
+  width: 90%;
+  height: 100%;
+  text-align: center;
+  margin: 10px;
+  font-family: Verdana;
+  font-size: 12px;
+}
+
+#sidebar-arrow {
+  width: 100%;
+  height: 54px;
+  margin-top: 5px;
+  margin-left: 15px;
+  background:url("../img/arrow.png") no-repeat;
+}
+
 .infowindow {
   min-width: 150px;
   min-height: 50px;
+  text-align: center;
 }
 
 .sidebar-item {
@@ -64,7 +90,7 @@ html, body {
   font-family: Verdana;
   font-size: 12px;
   font-weight: 200;
-  padding-left: 5px;
+  padding-left: 10px;
 }
 
 .controls {
