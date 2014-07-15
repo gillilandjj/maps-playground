@@ -1,13 +1,13 @@
 var geocoder = new google.maps.Geocoder();
 
 // Constructor
-function Site(map, location, drop_animation) {
+function Site(map, location, drop_animation, placeId) {
   // Initialize the instance properties
   var instance = this;
   instance.map = map;
   instance.location = location;
   instance.drop_animation = drop_animation;
-  instance.marker_icon = new google.maps.MarkerImage("img/site_icon.png", null, null, null, new google.maps.Size(59,68));
+  instance.marker_icon = new google.maps.MarkerImage("img/MapMarker.png", null, null, null, new google.maps.Size(21,39));
   instance.marker = {};
   instance.info_window = {};
   instance.geo_results = {};
@@ -65,7 +65,7 @@ function Site(map, location, drop_animation) {
     instance.marker = new google.maps.Marker({
       position: instance.location,
       map: instance.map,
-      title: 'Hi H8rz',
+      title: 'Finding address...',
       icon: instance.marker_icon,
       animation: instance.drop_animation
     });
@@ -73,7 +73,7 @@ function Site(map, location, drop_animation) {
 
   function createInfoWindow() {
     instance.info_window = new google.maps.InfoWindow({
-      content: 'Hi H8rz<p>' + displayAddress(getAddressItems(instance.geo_results.address_components)) + '</p>'
+      content: '<div class=\'infowindow\'>' + displayAddress(getAddressItems(instance.geo_results.address_components)) + '</div>'
     });
     instance.info_window.open(instance.map, instance.marker);
 
@@ -136,7 +136,7 @@ function Site(map, location, drop_animation) {
     instance.sidebar_item.append(
       $('<div>',
         { class: 'address-line',
-          html: displayAddress(addressItems)
+          html: '<p>' + displayAddress(addressItems) + '</p>'
         })
     );
 
@@ -153,6 +153,8 @@ function Site(map, location, drop_animation) {
       $.each(products, function(i, v) {
         var prod = createProduct(v);
         container.append(prod);
+        container.append($('<div>',
+                { class: 'sidebar-product-border' }));
 
         prod.click(function(event) {
           var c = 'sidebar-product-selected';

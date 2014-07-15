@@ -1,24 +1,30 @@
 var mySites = [];
+var plano = new google.maps.LatLng(32.9570199,-96.6874151);
 var zoom = { region: 6, city: 12, street: 14, optimal: 16 };
+var initialLocation;
+var siberia = new google.maps.LatLng(60, 105);
+var browserSupportFlag = new Boolean();
 
 function initialize() {
-  var myLatlng = new google.maps.LatLng(32.9570199,-96.6874151);
   var mapOptions = {
-    zoom: zoom.city,
-    center: myLatlng
+    zoom: zoom.region,
+    center: plano
   }
   var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-  // Create the search box and link it to the UI element.
-  var input = /** @type {HTMLInputElement} */(
-      document.getElementById('pac-input'));
+  // Create the search box
+  var input = document.getElementById('pac-input');
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-  var errdiv = document.getElementById('err-lbl');
-  map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(errdiv);
+  // Create the globe
+  var globe = document.getElementById('globe');
+  map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(globe);
 
-  var searchBox = new google.maps.places.SearchBox(
-    /** @type {HTMLInputElement} */(input));
+  // Create the error popover box
+  var errdiv = document.getElementById('err-lbl');
+  map.controls[google.maps.ControlPosition.BOTTOM].push(errdiv);
+
+  var searchBox = new google.maps.places.SearchBox(input);
 
   // [START region_getplaces]
   // Listen for the event fired when the user selects an item from the
@@ -27,12 +33,15 @@ function initialize() {
     var places = searchBox.getPlaces();
 
     if (places.length <= 0) { return; }
+    if (places[0].geometry.location) {
+      addPlace(map, places[0].geometry.location, google.maps.Animation.DROP, places[0].place_id);
+    }
 
-    for (var i = 0, place; place = places[i]; i++) {
+    /*for (var i = 0, place; place = places[i]; i++) {
       if (place.types[0] == 'street_address') {
         addSite(map, place.geometry.location, google.maps.Animation.DROP);
       }
-    }
+    }*/
   });
 
   google.maps.event.addListener(map, 'click', function(event) {
@@ -82,7 +91,7 @@ function initialize() {
       );
       return;
     }*/
-    addSite(map, event.latLng, null);
+    addSite(map, event.latLng, null, null);
   });
   
   // Bias the SearchBox results towards places that are within the bounds of the
@@ -95,11 +104,52 @@ function initialize() {
     // do something only the first time the map is loaded
     $('#err-lbl').hide();
   });
+
+  // Try W3C Geolocation (Preferred)
+  setTimeout(function() {
+  if(navigator.geolocation) {
+    browserSupportFlag = true;
+    navigator.geolocation.getCurrentPosition(function(position) {
+      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      map.setCenter(initialLocation);
+    }, function() {
+      handleNoGeolocation(browserSupportFlag);
+    });
+  }
+  // Browser doesn't support Geolocation
+  else {
+    browserSupportFlag = false;
+    handleNoGeolocation(browserSupportFlag);
+  }
+  }, 3000);
+
+  function handleNoGeolocation(errorFlag) {
+    if (errorFlag == true) {
+      showError("Geolocation service failed.");
+      initialLocation = plano;
+    } else {
+      showError("Your browser doesn't support geolocation. We've placed you in Siberia.");
+      initialLocation = siberia;
+    }
+    map.setCenter(initialLocation);
+  }
+
 }
 
-function addSite(map, location, animation) {
-  mySites.push(new Site(map, location, animation));
+function addSite(map, location, animation, placeId) {
+  mySites.push(new Site(map, location, animation, placeId));
   map.getBounds().extend(location);
+}
+
+function addPlace(map, place_id, animation) {
+
+  var service = new google.maps.places.PlacesService(map);
+  service.getDetails({ placeId: place_id }, function(place, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      addSite(map, place.geometry.location, animation);
+      //map.getBounds().extend(location);
+    }
+  }); 
 }
 
 function removeSite(site) {
