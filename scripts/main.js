@@ -18,7 +18,7 @@ function initialize() {
 
   // Create the globe
   var globe = document.getElementById('globe');
-  map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(globe);
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(globe);
 
   // Create the error popover box
   var errdiv = document.getElementById('err-lbl');
@@ -128,7 +128,7 @@ function initialize() {
       showError("Geolocation service failed.");
       initialLocation = plano;
     } else {
-      showError("Your browser doesn't support geolocation. We've placed you in Siberia.");
+      showError("Your browser doesn't support geolocation. Are you still using IE?? We've placed you in Siberia.");
       initialLocation = siberia;
     }
     map.setCenter(initialLocation);
