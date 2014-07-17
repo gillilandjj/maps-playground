@@ -7,7 +7,8 @@ function Site(map, location, drop_animation, placeId) {
   instance.map = map;
   instance.location = location;
   instance.drop_animation = drop_animation;
-  instance.marker_icon = new google.maps.MarkerImage("img/MapMarker.png", null, null, null, new google.maps.Size(21,39));
+  //instance.marker_icon = new google.maps.MarkerImage("img/MapMarker.png", null, null, null, new google.maps.Size(21,39));
+  instance.marker_icon = new google.maps.MarkerImage("img/kitten_marker.png", null, null, null, new google.maps.Size(50,58));
   instance.marker = {};
   instance.info_window = {};
   instance.geo_results = {};
@@ -160,11 +161,10 @@ function Site(map, location, drop_animation, placeId) {
           var c = 'sidebar-product-selected';
           if ($(this).hasClass(c)) {
             $(this).removeClass(c);
-            event.preventDefault();
-            return;
+          } else {
+            $(this).addClass(c);
           }
-          container.children().removeClass(c);
-          $(this).addClass(c);
+          //container.children().removeClass(c);
           event.preventDefault();
         });
       });
