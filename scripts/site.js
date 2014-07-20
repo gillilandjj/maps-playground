@@ -181,7 +181,7 @@ function Site(map, location, drop_animation, placeId) {
     $('.sidebar-product-selected').each(function(i, obj) {
       price += parseFloat(obj.attributes.price.value);
     });
-    $('#total-price').html(price);
+    $('#total-price').html(price.toFixed(2));
   }
 
   function removeMe() {
