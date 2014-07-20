@@ -151,10 +151,9 @@ function addSite(map, location, animation, placeId) {
   hideSidebarTip();
 }
 
-function addPlace(map, place_id, animation) {
-
+function addPlace(map, location, animation, placeId) {
   var service = new google.maps.places.PlacesService(map);
-  service.getDetails({ placeId: place_id }, function(place, status) {
+  service.getDetails({ placeId: placeId }, function(place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       addSite(map, place.geometry.location, animation);
       //map.getBounds().extend(location);

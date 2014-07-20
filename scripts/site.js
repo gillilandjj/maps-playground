@@ -7,8 +7,8 @@ function Site(map, location, drop_animation, placeId) {
   instance.map = map;
   instance.location = location;
   instance.drop_animation = drop_animation;
-  //instance.marker_icon = new google.maps.MarkerImage("img/MapMarker.png", null, null, null, new google.maps.Size(21,39));
-  instance.marker_icon = new google.maps.MarkerImage("img/kitten_marker.png", null, null, null, new google.maps.Size(50,58));
+  instance.marker_icon = new google.maps.MarkerImage("img/MapMarker.png", null, null, null, new google.maps.Size(21,39));
+  //instance.marker_icon = new google.maps.MarkerImage("img/kitten_marker.png", null, null, null, new google.maps.Size(50,58));
   instance.marker = {};
   instance.info_window = {};
   instance.geo_results = {};
@@ -116,10 +116,12 @@ function Site(map, location, drop_animation, placeId) {
   }
 
   function createProduct(product) {
-    return $('<div>',
+    var product = $('<div>',
              { class: 'sidebar-product',
-               html: product.name + ' ' + product.transport + '<br>' + product.price
+               html: product.name + ' ' + product.transport + '<br>$' + product.price,
+               price: product.price
              });
+    return product;
   }
 
   function createSidebarItem() {
@@ -165,12 +167,21 @@ function Site(map, location, drop_animation, placeId) {
             $(this).addClass(c);
           }
           //container.children().removeClass(c);
+          updateTotalPrice();
           event.preventDefault();
         });
       });
     }
 
-    $('#sidebar').append(instance.sidebar_item);
+    $('#sidebar').prepend(instance.sidebar_item);
+  }
+
+  function updateTotalPrice() {
+    var price = 0;
+    $('.sidebar-product-selected').each(function(i, obj) {
+      price += parseFloat(obj.attributes.price.value);
+    });
+    $('#total-price').html(price);
   }
 
   function removeMe() {
