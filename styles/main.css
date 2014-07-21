@@ -90,7 +90,6 @@ html, body {
 }
 
 .sidebar-product-container {
-  padding-left: 15px;
   width: 100%;
   background-color: #0079b6;
 }
@@ -99,6 +98,7 @@ html, body {
   height: 40px;
   width: 100%;
   padding-top: 9px;
+  padding-left: 18px;
   font-family: Verdana;
   font-size: 12px;
 }
@@ -110,7 +110,7 @@ html, body {
 }
 
 .sidebar-product-selected {
-  color: #FBAE17;
+  background:url("../img/orange-selected.png") left no-repeat;
 }
 
 .address-line {
