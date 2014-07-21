@@ -180,6 +180,8 @@ function hideError() {
 }
 
 function showError(text) {
+  // for geiss demo
+  return;
   var div = $('#err-lbl');
   div.html(text);
   div.slideToggle(150, 'swing', hideError);

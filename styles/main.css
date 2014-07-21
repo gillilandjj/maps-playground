@@ -153,9 +153,9 @@ html, body {
 }
 
 #globe {
-  width: 71px;
-  height: 53px;
-  background:url("../img/Globe.png") no-repeat;
+  width: 108px;
+  height: 107px;
+  background:url("../img/globe.png") no-repeat;
 }
 
 #pac-input {

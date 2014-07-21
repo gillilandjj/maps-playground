@@ -187,6 +187,7 @@ function Site(map, location, drop_animation, placeId) {
   function removeMe() {
     instance.marker.setMap(null);
     instance.sidebar_item.remove();
+    updateTotalPrice();
     removeSite(instance);
   }
 }
