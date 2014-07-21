@@ -3,6 +3,7 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
+  background-color: #e9e5dc;
 }
 
 #container {
@@ -34,15 +35,18 @@ html, body {
 }
 
 #sidebar {
+/*
   height: auto;
   width: 100%;
   background-color: #0079b6;
   color: white;
   margin: 0;
   padding: 0;
-  overflow-y: scroll;
-  overflow-x: hidden;
   display: inline-block;
+  overflow-y: scroll;
+*/
+  overflow-x: hidden;
+  padding-bottom: 80px;
 }
 
 #sidebar-tip {
@@ -56,16 +60,20 @@ html, body {
 }
 
 #sidebar-totalprice {
-  height: 120px;
-  width: 100%;
-  display: inline-block;
-  text-align: center;
-  background-color: green;
+  height: 80px;
+  width: 220px;
+  bottom: 0;
+  padding-left: 20px;
+  position: absolute;
+  background-color: #44C8F5;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-family: Verdana;
+  font-size: 26px;
 }
 
 #sidebar-totalprice h1 {
-  margin: 10px;
-  font-family: Verdana;
+  margin-bottom: 0px;
   font-size: 18px;
 }
 
@@ -87,6 +95,7 @@ html, body {
   display: inline-block;
   width: 100%;
   background-color: #44C8F5;
+  border-top-left-radius: 10px;
 }
 
 .sidebar-product-container {
@@ -107,6 +116,7 @@ html, body {
   width: 85%;
   height: 1px;
   background-color: #44C8F5;
+  margin-left: 20px;
 }
 
 .sidebar-product-selected {
@@ -139,7 +149,7 @@ html, body {
   right: 10px;
   float: right;
   position: relative;
-  background:url("../img/remove.png") no-repeat;
+  background:url("../img/remove.png") center no-repeat;
 }
 
 #globe {
