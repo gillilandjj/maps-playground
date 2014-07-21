@@ -70,6 +70,7 @@ html, body {
   border-top-right-radius: 10px;
   font-family: Verdana;
   font-size: 26px;
+  overflow-x: hidden;
 }
 
 #sidebar-totalprice h1 {
