@@ -1,30 +1,31 @@
 function getProducts(street, city, county, state, zip, country) {
+  
   var products = [];
 
   var avpn_eth = {
     name: 'AVPN',
     transport: 'ETHERNET',
-    price: '99.99'
+    price: randomIntFromInterval(218, 645)
   };
   var mis_eth = {
     name: 'MIS',
     transport: 'ETHERNET',
-    price: '89.99'
+    price: randomIntFromInterval(274, 523)
   };
   var ase = {
     name: 'ASE',
     transport: 'ETHERNET',
-    price: '79.99'
+    price: randomIntFromInterval(76, 287)
   };
   var avpn_prv = {
     name: 'AVPN',
     transport: 'PRIVATELINE',
-    price: '98.88'
+    price: randomIntFromInterval(350, 987)
   };
   var mis_prv = {
     name: 'MIS',
     transport: 'PRIVATELINE',
-    price: '78.88'
+    price: randomIntFromInterval(418, 2216)
   };
 
   var ethernet = true;
@@ -41,4 +42,8 @@ function getProducts(street, city, county, state, zip, country) {
   }
 
   return products;
+}
+
+function randomIntFromInterval(min,max) {
+  return Math.floor(Math.random()*(max-min+1)+min);
 }
