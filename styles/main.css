@@ -30,7 +30,9 @@ html, body {
   margin: 0;
   padding: 0;
   float: right;
+  overflow-y: scroll;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 #sidebar {
@@ -45,7 +47,6 @@ html, body {
   overflow-y: scroll;
 */
   overflow-x: hidden;
-  overflow-y: scroll;
   padding-bottom: 80px;
 }
 
